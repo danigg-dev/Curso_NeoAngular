@@ -183,52 +183,45 @@ var controller = {
 
     delete: (req,res) =>{
         var articleId = req.params.id;
-
-        // recoger los datos que llegan por put
-        var params = req.body;
-
-        // validar los datos
-
-        try{
-            var validate_title = !validator.isEmpty(params.title);
-            var validate_content = !validator.isEmpty(params.content);
-        }catch(err){
-            return res.status(200).send({
-                status: 'error',
-                message: 'Faltan datos por enviar !!!'
-            });
-        }
-
-        if(validate_content && validate_title){
-                //find update
-                Article.findOneAndDelete({_id: articleId}, params, {new:true},(err, articleUpdated) => {
-                    if(err){
-                        return res.status(500).send({
-                            status: 'error',
-                            message: 'Error al eliminar'
-                        });
-                    }
-
-                    if(!articleDeleted){
-                        return res.status(404).send({
-                            status: 'error',
-                            message: 'No existe el articulo'
-                        });
-                    }
-
-                    // resultado 
-                    return res.status(200).send({
-                        status: 'success',
-                        article: articleDeleted
-                    });
+        //find update
+        Article.findOneAndDelete({_id: articleId},(err, articleDeleted) => {
+            if(err){
+                return res.status(500).send({
+                    status: 'error',
+                    message: 'Error al eliminar'
                 });
-        }else{
+            }
+
+            if(!articleDeleted){
+                return res.status(404).send({
+                    status: 'error',
+                    message: 'No se ha borrado el articulo'
+                });
+            }
+
+            // resultado 
             return res.status(200).send({
-                status: 'error',
-                message: 'La validación no es correcta'
+                status: 'success',
+                article: articleDeleted
             });
-        }
-        
+        });
+    },
+
+    upload: (req,res) => {
+        //configurar el modulo multiparty  y router/article,js
+
+        // recoger el fichero 
+
+        // conseguir el nombre y la extension del archivo
+
+        // comprobar la extension , solo imagenes , si no borrar el fichero
+
+        // si todo es valido , buscar el articulo y asignarle el nombre de la imagen y actualizar
+
+        return res.status(404).send({
+            status: 'error',
+            message: 'No se ha borrado el articulo'
+        });
     },
 
 }; // end controller
